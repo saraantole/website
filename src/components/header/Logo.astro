@@ -1,0 +1,42 @@
+---
+import { SITE_SHORT_TITLE } from "../../config";
+
+interface Props {
+  size?: string;
+  color?: string;
+}
+
+const { size = "18px", color = "primary" } = Astro.props;
+
+const siteShortTitle = SITE_SHORT_TITLE;
+---
+
+<div class="logo" style={`font-size: ${size};`} data-color={color}>
+  {siteShortTitle}
+</div>
+
+<style>
+  .logo {
+    position: relative;
+    z-index: 9;
+    font-weight: 600;
+
+    /* Disable effects when sidebar is open */
+    filter: none !important;
+    pointer-events: auto !important;
+    user-select: auto !important;
+  }
+
+  /* Default to primary color, can be overridden */
+  .logo[data-color="primary"] {
+    color: var(--color-primary);
+  }
+
+  .logo[data-color="secondary"] {
+    color: var(--color-secondary);
+  }
+
+  .logo[data-color="tertiary"] {
+    color: var(--color-tertiary);
+  }
+</style>

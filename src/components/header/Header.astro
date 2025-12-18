@@ -1,0 +1,118 @@
+---
+import DesktopNavbar from "./DesktopNavbar.astro";
+import Logo from "./Logo.astro";
+import MobileNavbar from "./MobileNavbar.astro";
+import ThemeToggle from "../ThemeToggle.astro";
+---
+
+<header id="header" class="header">
+  <div class="header-content">
+    <a href="/" aria-label="home" class="logo-link">
+      <Logo color="primary" size="2rem" />
+    </a>
+
+    <div class="center-section">
+      <ThemeToggle />
+    </div>
+
+    <nav class="navigation">
+      <!-- <MobileNavbar />-->
+      <MobileNavbar />
+
+      <!-- Desktop Navbar -->
+      <DesktopNavbar />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background: var(--color-background);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInDown 0.5s ease-out 0.2s forwards;
+  }
+
+  @media (min-width: 992px) {
+    .header {
+      position: relative;
+    }
+  }
+
+  /* Animation loaded via body class */
+  :global(body.intro-done) .header {
+    animation: fadeInDown 0.5s ease-out 0.2s forwards;
+  }
+
+  @keyframes fadeInDown {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .header-content {
+    width: 100%;
+    max-width: var(--page-width);
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-link {
+    justify-self: start;
+  }
+
+  .center-section {
+    justify-self: center;
+  }
+
+  .navigation {
+    justify-self: end;
+  }
+</style>
+
+<script>
+  // Keep track of intro complete handler
+  let introCompleteHandler: (() => void) | null = null;
+
+  // Header animation on load
+  function initHeader() {
+    // Check if intro is done
+    const introDone = sessionStorage.getItem("introDone") === "true";
+
+    if (introDone) {
+      document.body.classList.add("intro-done");
+    } else {
+      // Remove existing listener if it exists
+      if (introCompleteHandler) {
+        window.removeEventListener("intro-complete", introCompleteHandler);
+      }
+
+      // Create new handler
+      introCompleteHandler = () => {
+        document.body.classList.add("intro-done");
+        sessionStorage.setItem("introDone", "true");
+      };
+
+      // Listen for splash screen completion
+      window.addEventListener("intro-complete", introCompleteHandler);
+    }
+  }
+
+  // Initialize on page load
+  initHeader();
+
+  // Re-initialize after navigation (for Astro view transitions)
+  document.addEventListener("astro:page-load", initHeader);
+</script>

@@ -1,0 +1,101 @@
+---
+import { NAV_LINKS } from "../../config";
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = NAV_LINKS;
+---
+
+<nav class="desktop-navbar">
+  {
+    navLinks.menu.map(({ name, url }) => (
+      <a href={url} class={`nav-link ${currentPath === url ? "current" : ""}`}>
+        {name}
+      </a>
+    ))
+  }
+  <a href={navLinks.button.url} class="cta-btn">
+    {navLinks.button.name}
+  </a>
+</nav>
+
+<style>
+  .desktop-navbar {
+    display: none;
+  }
+
+  @media (min-width: 992px) {
+    .desktop-navbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      max-width: fit-content;
+      background: var(--color-background);
+      gap: 2rem;
+    }
+
+    .desktop-navbar a {
+      color: var(--color-primary);
+    }
+  }
+
+  .nav-link {
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    position: relative;
+    padding: 0;
+    white-space: nowrap;
+  }
+
+  .nav-link::before {
+    transition: 200ms ease-out;
+    height: 2.5px;
+    content: "";
+    position: absolute;
+    background-color: var(--color-primary);
+    width: 0%;
+    bottom: -1px;
+  }
+
+  .nav-link:hover::before {
+    width: 100%;
+  }
+
+  .nav-link.current {
+    text-decoration: underline;
+  }
+
+  .nav-link.current:hover::before {
+    width: 0%;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-background);
+    color: var(--color-primary) !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cta-btn:hover {
+    background-color: var(--color-primary) !important;
+    color: var(--color-background) !important;
+  }
+
+  .cta-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+</style>

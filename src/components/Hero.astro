@@ -1,0 +1,252 @@
+---
+import { Image } from "astro:assets";
+import heroImage from "../assets/self.png";
+---
+
+<section id="hero" class="hero">
+  <div class="hero-content">
+    <h1 class="title greeting" id="scroll-left">Hello</h1>
+
+    {
+      heroImage && (
+        <div class="image-container">
+          <Image
+            src={heroImage}
+            alt="Sara Antole"
+            width={500}
+            height={500}
+            loading="eager"
+            class="hero-image"
+          />
+        </div>
+      )
+    }
+
+    <h2 class="title name" id="scroll-right">It's Sara</h2>
+
+    <h3 class="subtitle">
+      I'm a Fullstack Blockchain Developer based in sunny Spain, focused on
+      creating high-performing, secure and eye-pleasing dApps.
+    </h3>
+  </div>
+
+  <div class="about-link-container">
+    <a href="/about" class="about-link">&#8594; More About Me</a>
+  </div>
+</section>
+
+<style is:global>
+  .hero {
+    width: 100%;
+    background: var(--color-background);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    position: relative;
+    height: auto;
+    overflow: hidden;
+    padding-top: 100px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content {
+      padding-top: 80px;
+    }
+  }
+
+  .hero .title {
+    font-family: var(--font-primary);
+    font-size: 350px;
+    font-weight: 400 !important;
+    margin: 0 2rem;
+    line-height: 0.85;
+    color: var(--color-text);
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .hero .greeting {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero .name {
+    position: relative;
+    white-space: nowrap;
+    z-index: 3;
+    text-align: right;
+    top: -500px;
+    left: 80%;
+    padding-right: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero .title {
+      font-size: 120px;
+      line-height: 120px;
+    }
+
+    .hero .name {
+      left: 300px;
+      top: -180px;
+    }
+  }
+
+  .hero .subtitle {
+    font-family: var(--font-primary);
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+    position: relative;
+    top: -350px;
+    z-index: 4;
+    opacity: 0;
+    animation: subtitleFadeIn 1s ease-out 0.3s forwards;
+    padding: 0 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero .subtitle {
+      top: -160px;
+      font-size: 24px;
+    }
+  }
+
+  .hero .image-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: -140px;
+    left: 120px;
+    max-width: 500px;
+    margin-top: 4rem;
+    margin-left: 0;
+    box-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.16);
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    .hero .image-container {
+      margin-left: 0;
+      max-width: 240px;
+      top: -100px;
+      left: 2rem;
+    }
+  }
+
+  .hero .hero-image {
+    width: 100%;
+    height: auto;
+    filter: grayscale(40%) contrast(0.9) brightness(100%);
+    border-radius: var(--border-radius);
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero .about-link-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 2rem;
+    position: relative;
+    top: -300px;
+    z-index: 5;
+  }
+
+  @media (max-width: 768px) {
+    .hero .about-link-container {
+      top: -120px;
+    }
+  }
+
+  .hero .about-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-family: var(--font-primary);
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+    padding: 0;
+  }
+
+  .hero .about-link::before {
+    transition: 200ms ease-out;
+    height: 2px;
+    content: "";
+    position: absolute;
+    background-color: var(--color-text);
+    width: 0%;
+    bottom: -2px;
+  }
+
+  .hero .about-link:hover::before {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .hero .about-link {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+
+  @keyframes subtitleFadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
+
+<script>
+  function initParallax() {
+    const leftElement = document.getElementById("scroll-left");
+    const rightElement = document.getElementById("scroll-right");
+
+    if (!leftElement || !rightElement) {
+      return;
+    }
+
+    let ticking = false;
+
+    const updateParallax = () => {
+      const scrollY = window.scrollY;
+      const scrollProgress = scrollY * 1.2;
+
+      leftElement.style.transform = `translateX(${scrollProgress}px)`;
+
+      // Combine the centering transform with scroll transform
+      rightElement.style.transform = `translateX(calc(-50% + ${-scrollProgress}px))`;
+
+      ticking = false;
+    };
+
+    const requestTick = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", requestTick, { passive: true });
+
+    // Initial call
+    updateParallax();
+  }
+
+  // Run on page load
+  initParallax();
+
+  // Re-run after Astro view transitions
+  document.addEventListener("astro:page-load", initParallax);
+</script>

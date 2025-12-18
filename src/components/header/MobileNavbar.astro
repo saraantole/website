@@ -1,0 +1,311 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+import { NAV_LINKS } from "../../config";
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = NAV_LINKS;
+---
+
+<!-- Burger Menu Button -->
+<button
+  class="burger-menu"
+  aria-controls="sidebar"
+  aria-label="Toggle menu"
+  id="burger-button"
+>
+  <div class="burger-line"></div>
+  <div class="burger-line"></div>
+  <div class="burger-line"></div>
+</button>
+
+<!-- Mobile Sidebar -->
+<div class="mobile-navigation">
+  <div class="sidebar-wrapper" id="sidebar-wrapper">
+    <div class="sidebar-container" id="sidebar">
+      <nav class="sidebar-nav">
+        {
+          navLinks.menu.map(({ name, url }) => (
+            <a
+              href={url}
+              class={`nav-link ${currentPath === url ? "current" : ""}`}
+            >
+              {name}
+            </a>
+          ))
+        }
+        <a href={navLinks.button.url} class="cta-btn">
+          {navLinks.button.name}
+        </a>
+      </nav>
+    </div>
+    <div class="backdrop" id="sidebar-backdrop"></div>
+  </div>
+</div>
+
+<style>
+  /* ============================================
+     Burger Menu Button
+     ============================================ */
+  .burger-menu {
+    z-index: 12;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .burger-menu:focus {
+    outline: none;
+  }
+
+  .burger-line {
+    width: 2rem;
+    height: 0.25rem;
+    background: var(--color-primary);
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    transform-origin: 1px;
+  }
+
+  .burger-line:nth-child(2) {
+    width: 1.5rem;
+    margin-left: 0.5rem;
+  }
+
+  /* Burger animation when open */
+  .burger-menu.open .burger-line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .burger-menu.open .burger-line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .burger-menu.open .burger-line:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  /* ============================================
+     Mobile/Desktop Navigation Toggle
+     ============================================ */
+  .mobile-navigation {
+    display: block;
+  }
+
+  .desktop-navigation {
+    display: none;
+  }
+
+  @media (min-width: 992px) {
+    .burger-menu {
+      display: none;
+    }
+
+    .mobile-navigation {
+      display: none;
+    }
+
+    .desktop-navigation {
+      display: block;
+    }
+  }
+
+  /* ============================================
+     Sidebar Styles
+     ============================================ */
+  .backdrop {
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 9;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar-wrapper.open .backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (min-width: 992px) {
+    .backdrop {
+      display: none;
+    }
+  }
+
+  .sidebar-container {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    outline: 0;
+    z-index: 10;
+    transition: all 0.3s ease-in-out;
+    transform: translateX(100%);
+    visibility: hidden;
+  }
+
+  .sidebar-wrapper.open .sidebar-container {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  @media (min-width: 992px) {
+    .sidebar-container {
+      display: none;
+    }
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--color-background);
+    height: 100vh;
+    width: 100%;
+    text-align: left;
+    padding: 2rem;
+    position: relative;
+    right: 0;
+    margin-left: auto;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-nav a {
+    color: var(--color-primary);
+  }
+
+  .nav-link {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .nav-link.current {
+    text-decoration: underline;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin: 1.5rem auto;
+    padding: 1rem 2rem;
+    background-color: var(--color-background);
+    color: var(--color-primary) !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-primary);
+  }
+
+  .cta-btn:hover {
+    background-color: var(--color-primary) !important;
+    color: var(--color-background) !important;
+  }
+
+  .cta-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Keep track of the escape key handler
+  let escapeHandler: ((e: KeyboardEvent) => void) | null = null;
+
+  function initBurgerMenu() {
+    const burgerButton = document.getElementById("burger-button");
+    const sidebarWrapper = document.getElementById("sidebar-wrapper");
+    const backdrop = document.getElementById("sidebar-backdrop");
+
+    if (!burgerButton || !sidebarWrapper) return;
+
+    // Remove existing escape key handler if it exists
+    if (escapeHandler) {
+      document.removeEventListener("keydown", escapeHandler);
+    }
+
+    // Clone elements to remove all old listeners
+    const newBurgerButton = burgerButton.cloneNode(true) as HTMLElement;
+    burgerButton.parentNode?.replaceChild(newBurgerButton, burgerButton);
+
+    const newBackdrop = backdrop ? (backdrop.cloneNode(true) as HTMLElement) : null;
+    if (backdrop && newBackdrop) {
+      backdrop.parentNode?.replaceChild(newBackdrop, backdrop);
+    }
+
+    // Toggle sidebar on burger click
+    newBurgerButton.addEventListener("click", () => {
+      const isOpen = newBurgerButton.classList.toggle("open");
+      sidebarWrapper.classList.toggle("open", isOpen);
+
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = isOpen ? "hidden" : "";
+
+      // Update aria-expanded for accessibility
+      newBurgerButton.setAttribute("aria-expanded", isOpen.toString());
+    });
+
+    // Close sidebar when clicking backdrop
+    if (newBackdrop) {
+      newBackdrop.addEventListener("click", () => {
+        newBurgerButton.classList.remove("open");
+        sidebarWrapper.classList.remove("open");
+        document.body.style.overflow = "";
+        newBurgerButton.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    // Close sidebar when clicking any nav link
+    const navLinks = sidebarWrapper.querySelectorAll(".sidebar-nav a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        newBurgerButton.classList.remove("open");
+        sidebarWrapper.classList.remove("open");
+        document.body.style.overflow = "";
+        newBurgerButton.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Close menu on escape key
+    escapeHandler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && sidebarWrapper.classList.contains("open")) {
+        newBurgerButton.classList.remove("open");
+        sidebarWrapper.classList.remove("open");
+        document.body.style.overflow = "";
+        newBurgerButton.setAttribute("aria-expanded", "false");
+      }
+    };
+    document.addEventListener("keydown", escapeHandler);
+  }
+
+  // Initialize on page load
+  initBurgerMenu();
+
+  // Re-initialize after navigation (for Astro view transitions)
+  document.addEventListener("astro:page-load", initBurgerMenu);
+</script>
