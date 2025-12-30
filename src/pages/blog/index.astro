@@ -14,30 +14,34 @@ const posts = (await getCollection("blog")).sort(
   <section class="blog-section">
     <div class="blog-wrapper">
       <h1 class="blog-title" id="blog-title">Blog</h1>
-      <ul class="posts-grid">
-        {
-          posts.map((post) => (
-            <li>
-              <a href={`/blog/${post.id}/`}>
-                {post.data.heroImage && (
-                  <div class="post-image">
-                    <Image
-                      width={720}
-                      height={360}
-                      src={post.data.heroImage}
-                      alt={post.data.title}
-                    />
-                  </div>
-                )}
-                <h3 class="post-title">{post.data.title}</h3>
-                <p class="post-date">
-                  <FormattedDate date={post.data.pubDate} />
-                </p>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        posts.length === 0 ? (
+          <p class="no-posts-message">No blog posts yet. Check back soon!</p>
+        ) : (
+          <ul class="posts-grid">
+            {posts.map((post) => (
+              <li>
+                <a href={`/blog/${post.id}/`}>
+                  {post.data.heroImage && (
+                    <div class="post-image">
+                      <Image
+                        width={720}
+                        height={360}
+                        src={post.data.heroImage}
+                        alt={post.data.title}
+                      />
+                    </div>
+                  )}
+                  <h3 class="post-title">{post.data.title}</h3>
+                  <p class="post-date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
     </div>
   </section>
   <ContactButton />
@@ -124,6 +128,14 @@ const posts = (await getCollection("blog")).sort(
     margin: 0;
     color: var(--color-text);
     opacity: 0.6;
+  }
+
+  .no-posts-message {
+    font-size: 24px;
+    color: var(--color-text);
+    opacity: 0.7;
+    text-align: center;
+    margin-top: 150px;
   }
 
   @media (max-width: 768px) {
