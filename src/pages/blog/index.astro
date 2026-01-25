@@ -6,7 +6,7 @@ import FormattedDate from "../../components/FormattedDate.astro";
 import ContactButton from "../../components/ContactButton.astro";
 
 const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
@@ -50,9 +50,8 @@ const posts = (await getCollection("blog")).sort(
 <style>
   .blog-section {
     width: 100%;
-    min-height: 100vh;
     background: var(--color-background);
-    padding: 100px 0 350px 0;
+    padding: 200px 0 350px 0;
     overflow: hidden;
   }
 
@@ -166,42 +165,3 @@ const posts = (await getCollection("blog")).sort(
     }
   }
 </style>
-
-<script>
-  function initBlogParallax() {
-    const titleElement = document.getElementById("blog-title");
-
-    if (!titleElement) {
-      return;
-    }
-
-    let ticking = false;
-
-    const updateParallax = () => {
-      const scrollY = window.scrollY;
-      const scrollProgress = scrollY * 1.2;
-
-      titleElement.style.transform = `translateX(${scrollProgress}px)`;
-
-      ticking = false;
-    };
-
-    const requestTick = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", requestTick, { passive: true });
-
-    // Initial call
-    updateParallax();
-  }
-
-  // Run on page load
-  initBlogParallax();
-
-  // Re-run after Astro view transitions
-  document.addEventListener("astro:page-load", initBlogParallax);
-</script>

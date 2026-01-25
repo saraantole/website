@@ -26,15 +26,6 @@
   --footer-height: 100px;
 }
 
-/* Dark theme - add class to <html> or <body> */
-[data-theme="dark"] {
-  --color-text: #F8F8F8;
-  --color-primary: #F8F8F8;
-  --color-tertiary: #252525;
-  --color-background: #000000;
-}
-
-
 /* ============================================
    Global Resets & Base Styles
    ============================================ */
@@ -89,6 +80,10 @@ main {
 @media (max-width: 768px) {
   main {
     margin-top: var(--header-height);
+  }
+
+  main:has(#hero) {
+    margin-top: 0;
   }
 }
 
@@ -189,18 +184,4 @@ hr {
   background: #F8F8F8;
   border-radius: 15px;
   box-shadow: inset 7px 10px 12px #f0f0f0;
-}
-
-/* Dark theme scrollbar */
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #F8F8F8;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #cccccc;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #000000;
-  box-shadow: inset 7px 10px 12px #0a0a0a;
 }

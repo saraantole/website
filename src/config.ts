@@ -1,8 +1,9 @@
 //-- SITE SETTINGS -----
 export const SITE_TITLE = "Sara Antole";
 export const SITE_SHORT_TITLE = "SA"; // Used as logo text in header, footer, and splash screen
-export const SITE_DESCRIPTION = "Sara Antole, Fullstack Blockchain Developer";
-export const SITE_URL = "https://saraantole.netlify.app"; // TODO: Update this URL to your site's URL
+export const SITE_DESCRIPTION =
+  "Sara Antole, Product Fullstack Engineer in AI and Web3.";
+export const SITE_URL = "https://saraantole.vercel.app"; // TODO: Update this URL to your site's URL
 export const SITE_LANGUAGE = "en_US";
 export const SITE_ICON = "favicon.png";
 export const AUTHOR = "Sara Antole";
@@ -17,17 +18,6 @@ export const COLORS = {
     background: "#F8F8F8",
     card: "#FFFFFF",
     scrollBar: "rgba(0, 0, 0, 0.5)",
-    boxShadow: "rgba(0, 0, 0, 0.16)",
-    boxShadowHover: "rgba(0, 0, 0, 0.32)",
-  },
-  darkTheme: {
-    primary: "#FAFAFA",
-    tertiary: "#252525",
-    text: "rgba(255, 255, 255, 0.87)",
-    subtext: "#CCCC",
-    background: "#121212",
-    card: "#1C1C1C",
-    scrollBar: "rgba(255, 255, 255, 0.5)",
     boxShadow: "rgba(0, 0, 0, 0.16)",
     boxShadowHover: "rgba(0, 0, 0, 0.32)",
   },

@@ -1,16 +1,32 @@
 ---
-import { SITE_TITLE } from "../config";
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from "../config";
 import { ClientRouter } from "astro:transitions";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image } = Astro.props;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: AUTHOR,
+  url: Astro.site,
+  description: SITE_DESCRIPTION,
+  sameAs: [
+    "https://www.linkedin.com/in/sara-antole/",
+    "https://github.com/saraantole",
+    "https://www.instagram.com/0xsaraa/",
+  ],
+};
 ---
 
 <head>
   <!-- Global Metadata -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="theme-color" content="#F8F8F8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.png" />
   <link rel="sitemap" href="/sitemap-index.xml" />
   <link
@@ -43,6 +59,12 @@ const { title, description, image } = Astro.props;
   <meta property="twitter:description" content={description} />
   <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
+  <!-- Structured Data (JSON-LD) -->
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+  />
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-G8QC30GZBQ"
   ></script>
@@ -53,14 +75,6 @@ const { title, description, image } = Astro.props;
     }
     gtag("js", new Date());
     gtag("config", "G-G8QC30GZBQ");
-  </script>
-
-  <!-- Theme initialization script (runs immediately to prevent flash) -->
-  <script is:inline>
-    (function () {
-      const theme = localStorage.getItem("theme") || "light";
-      document.documentElement.setAttribute("data-theme", theme);
-    })();
   </script>
 
   <ClientRouter />

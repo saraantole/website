@@ -2,7 +2,7 @@
 import DesktopNavbar from "./DesktopNavbar.astro";
 import Logo from "./Logo.astro";
 import MobileNavbar from "./MobileNavbar.astro";
-import ThemeToggle from "../ThemeToggle.astro";
+import { NAV_LINKS } from "../../config";
 ---
 
 <header id="header" class="header">
@@ -12,42 +12,48 @@ import ThemeToggle from "../ThemeToggle.astro";
     </a>
 
     <div class="center-section">
-      <ThemeToggle />
+      <DesktopNavbar />
     </div>
 
     <nav class="navigation">
-      <!-- <MobileNavbar />-->
       <MobileNavbar />
-
-      <!-- Desktop Navbar -->
-      <DesktopNavbar />
+      <div class="desktop-right">
+        <a href={NAV_LINKS.button.url} class="cta-btn">
+          {NAV_LINKS.button.name}
+        </a>
+      </div>
     </nav>
   </div>
 </header>
 
 <style>
   .header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: var(--header-height);
-    background: var(--color-background);
+    background: transparent;
     z-index: 10;
     opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeInDown 0.5s ease-out 0.2s forwards;
+    transform: translateY(-20px);
+    animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
   }
 
-  @media (min-width: 992px) {
+  @media (max-width: 992px) {
     .header {
-      position: relative;
+      position: fixed;
+      background: var(--color-background);
+      transition: background-color 0.1s ease;
     }
-  }
 
-  /* Animation loaded via body class */
-  :global(body.intro-done) .header {
-    animation: fadeInDown 0.5s ease-out 0.2s forwards;
+    .header.has-hero {
+      background: transparent;
+    }
+
+    .header.scrolled {
+      background: var(--color-background);
+    }
   }
 
   @keyframes fadeInDown {
@@ -80,7 +86,145 @@ import ThemeToggle from "../ThemeToggle.astro";
   .navigation {
     justify-self: end;
   }
+
+  .desktop-right {
+    display: none;
+  }
+
+  @media (min-width: 992px) {
+    .desktop-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+  }
+
+  .cta-btn {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    color: var(--color-primary) !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cta-btn:hover {
+    background-color: var(--color-primary) !important;
+    color: var(--color-background) !important;
+  }
+
+  .cta-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* White header styles when hero is present (desktop only) */
+  @media (min-width: 992px) {
+    .header.has-hero .cta-btn {
+      color: var(--color-background) !important;
+      border-color: var(--color-background);
+    }
+
+    .header.has-hero .cta-btn:hover {
+      background-color: var(--color-background) !important;
+      color: var(--color-primary) !important;
+    }
+  }
 </style>
+
+<script>
+  function initHeroDetection() {
+    const header = document.getElementById("header");
+    const hero = document.getElementById("hero");
+    const logo = header?.querySelector(".logo");
+    const burgerButton = header?.querySelector(".burger-menu");
+
+    if (header && hero) {
+      const isDesktop = window.innerWidth >= 992;
+      const isScrolled = header.classList.contains("scrolled");
+
+      // White styles when hero is present and not scrolled
+      if (!isScrolled) {
+        header.classList.add("has-hero");
+        if (logo) {
+          logo.setAttribute("data-color", "white");
+        }
+        if (burgerButton) {
+          burgerButton.classList.add("white");
+        }
+      } else {
+        // Black styles when scrolled (even with hero)
+        header.classList.remove("has-hero");
+        if (logo) {
+          logo.setAttribute("data-color", "primary");
+        }
+        if (burgerButton) {
+          burgerButton.classList.remove("white");
+        }
+      }
+    } else if (logo && burgerButton) {
+      // No hero, set logo and burger to primary (black)
+      logo.setAttribute("data-color", "primary");
+      burgerButton.classList.remove("white");
+      if (header) {
+        header.classList.remove("has-hero");
+      }
+    }
+  }
+
+  function initHeaderScroll() {
+    const header = document.getElementById("header");
+    if (!header) return;
+
+    // Only apply scroll effect on mobile
+    const isMobile = window.innerWidth < 992;
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const hero = document.getElementById("hero");
+
+      // Use hero height if it exists, otherwise use a default threshold
+      const threshold = hero ? hero.offsetHeight : 100;
+
+      if (scrollY > threshold) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+
+      // Re-run hero detection when scroll state changes
+      initHeroDetection();
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
+  }
+
+  // Run on page load
+  initHeroDetection();
+  initHeaderScroll();
+
+  // Re-run after Astro view transitions
+  document.addEventListener("astro:page-load", () => {
+    initHeroDetection();
+    initHeaderScroll();
+  });
+
+  // Handle window resize
+  window.addEventListener("resize", () => {
+    initHeroDetection();
+  });
+</script>
 
 <script>
   // Keep track of intro complete handler

@@ -1,0 +1,56 @@
+<section class="about-intro">
+  <h3 class="subtitle">
+    HI, I'm Sara. I build <b>technology that works for humans</b>. Product
+    Fullstack Engineer designing thoughtful AI and Web3 products and systems
+    that free focus, time, and creative energy—without noise or hype.
+  </h3>
+
+  <div class="about-link-container">
+    <a href="/about" class="about-link">&#8594; More About Me</a>
+  </div>
+</section>
+
+<style>
+  .about-intro {
+    width: 100%;
+    background: var(--color-background);
+    padding: 4rem 2rem;
+  }
+
+  .subtitle {
+    font-family: var(--font-primary);
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .about-link-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .about-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-family: var(--font-primary);
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 1rem;
+  }
+
+  .about-link::before {
+    transition: 200ms ease-out;
+    height: 2px;
+    content: "";
+    position: absolute;
+    background-color: var(--color-text);
+    width: 0%;
+    bottom: 0;
+  }
+
+  .about-link:hover::before {
+    width: 100%;
+  }
+</style>

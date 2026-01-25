@@ -122,15 +122,6 @@
     border-bottom-color: var(--color-primary);
   }
 
-  [data-theme="dark"] input:focus,
-  [data-theme="dark"] input:hover,
-  [data-theme="dark"] textarea:focus,
-  [data-theme="dark"] textarea:hover,
-  [data-theme="dark"] select:focus,
-  [data-theme="dark"] select:hover {
-    background: rgba(255, 255, 255, 0.03);
-  }
-
   /* Override browser autocomplete styling */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -201,7 +192,7 @@
   const successMessage = document.getElementById("success-message");
   const errorMessage = document.getElementById("error-message");
   const submitButton = form?.querySelector(
-    ".submit-button"
+    ".submit-button",
   ) as HTMLButtonElement;
   const subjectSelect = document.getElementById("subject") as HTMLSelectElement;
 

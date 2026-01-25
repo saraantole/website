@@ -1,0 +1,206 @@
+---
+import AboutHeroImage from "../assets/conf.png";
+---
+
+<section id="hero" class="hero">
+  <div
+    class="hero-bg-blurred"
+    style={`background-image: url(${AboutHeroImage.src});`}
+  >
+  </div>
+  <div
+    class="hero-bg-clear"
+    style={`background-image: url(${AboutHeroImage.src});`}
+  >
+  </div>
+  <div class="hero-border"></div>
+  <div class="hero-plus">+</div>
+  <div class="hero-overlay"></div>
+  <!--   <div class="hero-content">
+    <h1 class="title greeting" id="scroll-left">Hello</h1>
+    <h2 class="title name" id="scroll-right">It's Sara</h2>
+  </div> -->
+</section>
+
+<style is:global>
+  .hero {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-text);
+  }
+
+  .hero-bg-blurred {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    filter: blur(6px) grayscale(100%);
+    z-index: 0;
+  }
+
+  .hero-bg-clear {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    filter: grayscale(50%);
+    clip-path: inset(20% 42.5% 50% 42.5%);
+    z-index: 0;
+  }
+
+  .hero-border {
+    position: absolute;
+    top: 20%;
+    left: 42.5%;
+    right: 42.5%;
+    bottom: 50%;
+    border: 1px solid var(--color-tertiary);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-plus {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-tertiary);
+    font-size: 30px;
+    font-weight: 300;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  @media (max-width: 991px) {
+    .hero-bg-clear {
+      clip-path: inset(20% 20% 50% 20%);
+    }
+
+    .hero-border {
+      top: 20%;
+      left: 20%;
+      right: 20%;
+      bottom: 50%;
+    }
+
+    .hero-plus {
+      top: 35%;
+    }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hero .title {
+    font-family: var(--font-primary);
+    font-size: clamp(60px, 15vw, 200px);
+    font-weight: 400 !important;
+    margin: 0;
+    line-height: 1;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero .greeting {
+    position: relative;
+  }
+
+  .hero .name {
+    position: relative;
+    text-align: left;
+  }
+</style>
+
+<script>
+  function initHeroMouseMove() {
+    const hero = document.getElementById("hero");
+    const header = document.getElementById("header");
+    const clearBg = document.querySelector(".hero-bg-clear") as HTMLElement;
+    const border = document.querySelector(".hero-border") as HTMLElement;
+    const plus = document.querySelector(".hero-plus") as HTMLElement;
+
+    if (!hero || !clearBg || !border || !plus) return;
+
+    // Only enable on desktop
+    const isDesktop = window.innerWidth >= 992;
+    if (!isDesktop) return;
+
+    hero.addEventListener("mousemove", (e: MouseEvent) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = (x / rect.width) * 100;
+      const centerY = (y / rect.height) * 100;
+
+      // Calculate inset values to keep the square centered on cursor
+      const squareWidth = 15; // 15% width
+      const squareHeight = 30; // 30% height
+
+      // Calculate header height as percentage of hero height
+      let minTop = 0;
+      if (header) {
+        const headerHeight = header.offsetHeight;
+        const heroHeight = hero.offsetHeight;
+        minTop = (headerHeight / heroHeight) * 100;
+      }
+
+      const top = Math.max(
+        minTop,
+        Math.min(100 - squareHeight, centerY - squareHeight / 2),
+      );
+      const left = Math.max(
+        0,
+        Math.min(100 - squareWidth, centerX - squareWidth / 2),
+      );
+      const bottom = 100 - top - squareHeight;
+      const right = 100 - left - squareWidth;
+
+      clearBg.style.clipPath = `inset(${top}% ${right}% ${bottom}% ${left}%)`;
+      border.style.top = `${top}%`;
+      border.style.left = `${left}%`;
+      border.style.right = `${right}%`;
+      border.style.bottom = `${bottom}%`;
+      plus.style.top = `${top + squareHeight / 2}%`;
+      plus.style.left = `${left + squareWidth / 2}%`;
+    });
+  }
+
+  // Run on page load
+  initHeroMouseMove();
+
+  // Re-run after Astro view transitions
+  document.addEventListener("astro:page-load", initHeroMouseMove);
+</script>

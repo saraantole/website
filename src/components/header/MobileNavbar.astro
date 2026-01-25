@@ -78,6 +78,10 @@ const navLinks = NAV_LINKS;
     transform-origin: 1px;
   }
 
+  .burger-menu.white .burger-line {
+    background: var(--color-background);
+  }
+
   .burger-line:nth-child(2) {
     width: 1.5rem;
     margin-left: 0.5rem;
@@ -231,6 +235,14 @@ const navLinks = NAV_LINKS;
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
+
+  .theme-toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-tertiary);
+  }
 </style>
 
 <script>
@@ -253,7 +265,9 @@ const navLinks = NAV_LINKS;
     const newBurgerButton = burgerButton.cloneNode(true) as HTMLElement;
     burgerButton.parentNode?.replaceChild(newBurgerButton, burgerButton);
 
-    const newBackdrop = backdrop ? (backdrop.cloneNode(true) as HTMLElement) : null;
+    const newBackdrop = backdrop
+      ? (backdrop.cloneNode(true) as HTMLElement)
+      : null;
     if (backdrop && newBackdrop) {
       backdrop.parentNode?.replaceChild(newBackdrop, backdrop);
     }

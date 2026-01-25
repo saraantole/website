@@ -1,253 +1,354 @@
 ---
-import { Image } from "astro:assets";
-import heroImage from "../assets/self.png";
+import heroImage from "../assets/self.jpg";
+
+const adjectives = [
+  "Product engineer",
+  "AI-native",
+  "Human-first",
+  "Experiment-driven",
+];
 ---
 
 <section id="hero" class="hero">
-  <div class="hero-content">
-    <h1 class="title greeting" id="scroll-left">Hello</h1>
-
-    {
-      heroImage && (
-        <div class="image-container">
-          <Image
-            src={heroImage}
-            alt="Sara Antole"
-            width={500}
-            height={500}
-            loading="eager"
-            class="hero-image"
-          />
-        </div>
-      )
-    }
-
-    <h2 class="title name" id="scroll-right">It's Sara</h2>
-
-    <h3 class="subtitle">
-      I build <b>technology that works for humans</b>. Senior Fullstack Engineer
-      designing thoughtful AI and Web3 products and systems that free focus,
-      time, and creative energy—without noise or hype.
-    </h3>
+  <div
+    class="hero-bg-blurred"
+    style={`background-image: url(${heroImage.src});`}
+  >
   </div>
-
-  <div class="about-link-container">
-    <a href="/about" class="about-link">&#8594; More About Me</a>
+  <div class="hero-bg-clear" style={`background-image: url(${heroImage.src});`}>
+  </div>
+  <div class="hero-border"></div>
+  <div class="hero-plus">+</div>
+  <div class="hero-overlay"></div>
+  <div class="hero-center-content">
+    {
+      adjectives.map((adj, index) => (
+        <div
+          class="hero-text"
+          style={`animation-delay: ${2.4 + index * 0.15}s`}
+        >
+          {adj}
+        </div>
+      ))
+    }
+  </div>
+  <div class="hero-content">
+    <h1 class="title">Sara Antole</h1>
   </div>
 </section>
 
 <style is:global>
   .hero {
     width: 100%;
-    background: var(--color-background);
+    min-height: 100vh;
     overflow: hidden;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-text);
+  }
+
+  .hero-bg-blurred {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px) grayscale(100%);
+    z-index: 0;
+    opacity: 0;
+    transform: scale(1.05);
+    animation: heroImageReveal 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .hero-bg-clear {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(50%);
+    clip-path: inset(0% 0% 0% 0%);
+    z-index: 1;
+    opacity: 0;
+    transform: scale(1.05);
+    animation:
+      heroImageReveal 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+      shrinkSquare 1s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  }
+
+  @keyframes shrinkSquare {
+    to {
+      clip-path: inset(20% 42.5% 50% 42.5%);
+    }
+  }
+
+  .hero-border {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    border: 1px solid var(--color-tertiary);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    animation: shrinkBorder 1s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  }
+
+  @keyframes shrinkBorder {
+    0% {
+      opacity: 1;
+      top: 0%;
+      left: 0%;
+      right: 0%;
+      bottom: 0%;
+    }
+    100% {
+      opacity: 1;
+      top: 20%;
+      left: 42.5%;
+      right: 42.5%;
+      bottom: 50%;
+    }
+  }
+
+  .hero-plus {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-tertiary);
+    font-size: 30px;
+    font-weight: 300;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+  }
+
+  @keyframes heroImageReveal {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 991px) {
+    .hero {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    @keyframes shrinkSquare {
+      to {
+        clip-path: inset(20% 20% 50% 20%);
+      }
+    }
+
+    @keyframes shrinkBorder {
+      0% {
+        opacity: 1;
+        top: 0%;
+        left: 0%;
+        right: 0%;
+        bottom: 0%;
+      }
+      100% {
+        opacity: 1;
+        top: 20%;
+        left: 20%;
+        right: 20%;
+        bottom: 50%;
+      }
+    }
+
+    .hero-plus {
+      top: 35%;
+    }
+
+    .hero-center-content {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0 2rem;
+      top: 60% !important;
+      transform: translateY(0) !important;
+    }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.4s forwards;
+  }
+
+  .hero-center-content {
+    position: absolute;
+    top: 55%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    padding: 0 2rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .hero-text {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-background);
+    white-space: nowrap;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
   }
 
   .hero-content {
     width: 100%;
-    max-width: var(--page-width);
-    margin: 0 auto;
-    position: relative;
-    height: auto;
-    overflow: hidden;
-    padding-top: 100px;
-  }
-
-  @media (max-width: 768px) {
-    .hero-content {
-      padding-top: 80px;
-    }
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.4s forwards;
   }
 
   .hero .title {
     font-family: var(--font-primary);
-    font-size: 350px;
-    font-weight: 400 !important;
-    margin: 0 2rem;
-    line-height: 0.85;
-    color: var(--color-text);
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  .hero .greeting {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero .name {
-    position: relative;
-    white-space: nowrap;
-    z-index: 3;
-    text-align: right;
-    top: -500px;
-    left: 80%;
-    padding-right: 2rem;
-  }
-
-  @media (max-width: 768px) {
-    .hero .title {
-      font-size: 120px;
-      line-height: 120px;
-    }
-
-    .hero .name {
-      left: 300px;
-      top: -180px;
-    }
-  }
-
-  .hero .subtitle {
-    font-family: var(--font-primary);
-    font-size: 28px;
-    font-weight: 600;
+    font-size: clamp(18px, 18vw, 320px);
+    font-weight: 500 !important;
     margin: 0;
-    color: var(--color-text);
-    position: relative;
-    top: -350px;
-    z-index: 4;
-    opacity: 0;
-    animation: subtitleFadeIn 1s ease-out 0.3s forwards;
-    padding: 0 2rem;
-  }
-
-  @media (max-width: 768px) {
-    .hero .subtitle {
-      top: -160px;
-      font-size: 24px;
-    }
-  }
-
-  .hero .image-container {
+    line-height: 1;
+    color: var(--color-background);
+    text-align: center;
     width: 100%;
-    height: auto;
-    position: relative;
-    top: -140px;
-    left: 120px;
-    max-width: 500px;
-    margin-top: 4rem;
-    margin-left: 0;
-    box-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.16);
-    z-index: 2;
-  }
-
-  @media (max-width: 768px) {
-    .hero .image-container {
-      margin-left: 0;
-      max-width: 240px;
-      top: -100px;
-      left: 2rem;
-    }
-  }
-
-  .hero .hero-image {
-    width: 100%;
-    height: auto;
-    filter: grayscale(40%) contrast(0.9) brightness(100%);
-    border-radius: var(--border-radius);
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-
-  .hero .about-link-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 2rem;
-    position: relative;
-    top: -300px;
-    z-index: 5;
-  }
-
-  @media (max-width: 768px) {
-    .hero .about-link-container {
-      top: -120px;
-    }
-  }
-
-  .hero .about-link {
-    color: var(--color-text);
-    text-decoration: none;
-    font-family: var(--font-primary);
-    font-size: 20px;
-    font-weight: 500;
-    position: relative;
-    padding: 0;
-  }
-
-  .hero .about-link::before {
-    transition: 200ms ease-out;
-    height: 2px;
-    content: "";
-    position: absolute;
-    background-color: var(--color-text);
-    width: 0%;
-    bottom: -2px;
-  }
-
-  .hero .about-link:hover::before {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    .hero .about-link {
-      margin: 0;
-      font-size: 18px;
-    }
-  }
-
-  @keyframes subtitleFadeIn {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
   }
 </style>
 
 <script>
-  function initParallax() {
-    const leftElement = document.getElementById("scroll-left");
-    const rightElement = document.getElementById("scroll-right");
+  function initHeroMouseMove() {
+    const hero = document.getElementById("hero");
+    const header = document.getElementById("header");
+    const clearBg = document.querySelector(".hero-bg-clear") as HTMLElement;
+    const border = document.querySelector(".hero-border") as HTMLElement;
+    const plus = document.querySelector(".hero-plus") as HTMLElement;
 
-    if (!leftElement || !rightElement) {
-      return;
-    }
+    if (!hero || !clearBg || !border || !plus) return;
 
-    let ticking = false;
+    // Only enable on desktop
+    const isDesktop = window.innerWidth >= 992;
+    if (!isDesktop) return;
 
-    const updateParallax = () => {
-      const scrollY = window.scrollY;
-      const scrollProgress = scrollY * 1.2;
+    // Reset animations to ensure they play from the beginning
+    clearBg.style.animation = "";
+    border.style.animation = "";
+    plus.style.animation = "";
+    clearBg.style.opacity = "";
+    clearBg.style.transform = "";
+    clearBg.style.clipPath = "";
+    border.style.top = "";
+    border.style.left = "";
+    border.style.right = "";
+    border.style.bottom = "";
+    border.style.opacity = "";
+    plus.style.opacity = "";
 
-      leftElement.style.transform = `translateX(${scrollProgress}px)`;
+    // Wait for animations to complete before enabling mouse tracking
+    setTimeout(() => {
+      // Remove animations so JavaScript can take control
+      clearBg.style.animation = "none";
+      border.style.animation = "none";
+      plus.style.animation = "none";
 
-      // Combine the centering transform with scroll transform
-      rightElement.style.transform = `translateX(calc(-50% + ${-scrollProgress}px))`;
+      // Set initial position explicitly
+      clearBg.style.opacity = "1";
+      clearBg.style.transform = "scale(1)";
+      clearBg.style.clipPath = "inset(20% 42.5% 50% 42.5%)";
+      border.style.top = "20%";
+      border.style.left = "42.5%";
+      border.style.right = "42.5%";
+      border.style.bottom = "50%";
+      border.style.opacity = "1";
+      plus.style.opacity = "1";
 
-      ticking = false;
-    };
+      hero.addEventListener("mousemove", (e: MouseEvent) => {
+        const rect = hero.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-    const requestTick = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    };
+        const centerX = (x / rect.width) * 100;
+        const centerY = (y / rect.height) * 100;
 
-    window.addEventListener("scroll", requestTick, { passive: true });
+        // Calculate inset values to keep the square centered on cursor
+        const squareWidth = 15; // 15% width
+        const squareHeight = 30; // 30% height
 
-    // Initial call
-    updateParallax();
+        // Calculate header height as percentage of hero height
+        let minTop = 0;
+        if (header) {
+          const headerHeight = header.offsetHeight;
+          const heroHeight = hero.offsetHeight;
+          minTop = (headerHeight / heroHeight) * 100;
+        }
+
+        const top = Math.max(
+          minTop,
+          Math.min(100 - squareHeight, centerY - squareHeight / 2),
+        );
+        const left = Math.max(
+          0,
+          Math.min(100 - squareWidth, centerX - squareWidth / 2),
+        );
+        const bottom = 100 - top - squareHeight;
+        const right = 100 - left - squareWidth;
+
+        clearBg.style.clipPath = `inset(${top}% ${right}% ${bottom}% ${left}%)`;
+        border.style.top = `${top}%`;
+        border.style.left = `${left}%`;
+        border.style.right = `${right}%`;
+        border.style.bottom = `${bottom}%`;
+        plus.style.top = `${top + squareHeight / 2}%`;
+        plus.style.left = `${left + squareWidth / 2}%`;
+      });
+    }, 2200); // Enable after text animations complete (2.2s)
   }
 
   // Run on page load
-  initParallax();
+  initHeroMouseMove();
 
   // Re-run after Astro view transitions
-  document.addEventListener("astro:page-load", initParallax);
+  document.addEventListener("astro:page-load", initHeroMouseMove);
 </script>
