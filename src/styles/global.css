@@ -8,10 +8,10 @@
   --font-primary: 'Manrope', sans-serif, -apple-system;
 
   /* Colors - Light Theme (default) */
-  --color-text: #000000;
-  --color-primary: #000000;
+  --color-text: #000000; /*#0D6E75*/
+  --color-primary: #111827;
   --color-tertiary: #ECECEC;
-  --color-background: #F8F8F8;
+  --color-background: #F5F7FA;
 
   /* Breakpoints (for reference in media queries) */
   --breakpoint-xs: 480px;

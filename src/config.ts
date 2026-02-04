@@ -3,7 +3,7 @@ export const SITE_TITLE = "Sara Antole";
 export const SITE_SHORT_TITLE = "SA"; // Used as logo text in header, footer, and splash screen
 export const SITE_DESCRIPTION =
   "Sara Antole, Product Fullstack Engineer in AI and Web3.";
-export const SITE_URL = "https://saraantole.vercel.app"; // TODO: Update this URL to your site's URL
+export const SITE_URL = "https://saraantole.vercel.app";
 export const SITE_LANGUAGE = "en_US";
 export const SITE_ICON = "favicon.png";
 export const AUTHOR = "Sara Antole";
@@ -35,7 +35,7 @@ export const SOCIAL_MEDIA = [
   },
   {
     name: "Instagram",
-    url: "https://www.instagram.com/0xsaraa/", // TODO: Update this URL to your Instagram profile
+    url: "https://www.instagram.com/sara.calmtech/",
   },
 ];
 
