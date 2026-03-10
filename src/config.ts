@@ -23,6 +23,10 @@ export const COLORS = {
   },
 };
 
+//-- BLOG SETTINGS -----
+export const SUBSTACK_URL = "https://saracalmtech.substack.com";
+export const SUBSTACK_RSS_FEED = `${SUBSTACK_URL}/feed`;
+
 //-- SOCIAL MEDIA SETTINGS -----
 export const SOCIAL_MEDIA = [
   {

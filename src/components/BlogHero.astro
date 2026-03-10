@@ -1,0 +1,113 @@
+---
+interface Props {
+  heroImage: string;
+}
+
+const { heroImage } = Astro.props;
+---
+
+<section id="hero" class="hero">
+  <div
+    class="hero-bg-blurred"
+    style={`background-image: url(${heroImage});`}
+  >
+  </div>
+  <div
+    class="hero-bg-clear"
+    style={`background-image: url(${heroImage});`}
+  >
+  </div>
+  <div class="hero-border"></div>
+  <div class="hero-plus">+</div>
+  <div class="hero-overlay"></div>
+</section>
+
+<style is:global>
+  .hero {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-text);
+  }
+
+  .hero-bg-blurred {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px) grayscale(100%);
+    z-index: 0;
+  }
+
+  .hero-bg-clear {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(40%);
+    clip-path: inset(20% 42.5% 50% 42.5%);
+    z-index: 1;
+  }
+
+  .hero-border {
+    position: absolute;
+    top: 20%;
+    left: 42.5%;
+    right: 42.5%;
+    bottom: 50%;
+    border: 1px solid var(--color-tertiary);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-plus {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-tertiary);
+    font-size: 30px;
+    font-weight: 300;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
+
+  @media (max-width: 991px) {
+    .hero-bg-clear {
+      clip-path: inset(20% 20% 50% 20%);
+    }
+
+    .hero-border {
+      top: 20%;
+      left: 20%;
+      right: 20%;
+      bottom: 50%;
+    }
+
+    .hero-plus {
+      top: 35%;
+    }
+  }
+</style>

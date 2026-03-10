@@ -1,0 +1,178 @@
+<div class="subscribe-container">
+  <h3>Subscribe to the newsletter</h3>
+  <p>Get the latest thoughts directly in your inbox.</p>
+
+  <form
+    id="subscribe-form"
+    action="https://saracalmtech.substack.com/api/v1/free"
+    method="post"
+    class="subscribe-form"
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      required
+      class="email-input"
+    />
+    <input type="hidden" name="first_url" value="" />
+    <input type="hidden" name="first_referrer" value="" />
+    <input type="hidden" name="current_url" value="" />
+    <input type="hidden" name="current_referrer" value="" />
+    <input type="hidden" name="referral_code" value="" />
+    <input type="hidden" name="source" value="embed" />
+    <button type="submit" class="subscribe-button">Subscribe</button>
+  </form>
+
+  <p class="success-message" style="display: none;">
+    Thanks for subscribing! Check your email to confirm.
+  </p>
+  <p class="error-message" style="display: none;">
+    Something went wrong. Please try again.
+  </p>
+</div>
+
+<script>
+  const form = document.getElementById("subscribe-form") as HTMLFormElement;
+  const successMessage = document.querySelector(
+    ".success-message",
+  ) as HTMLElement;
+  const errorMessage = document.querySelector(".error-message") as HTMLElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors",
+      });
+
+      // Since we're using no-cors, we can't check the response status
+      // So we assume success if no error was thrown
+      form.style.display = "none";
+      successMessage.style.display = "block";
+      errorMessage.style.display = "none";
+    } catch (error) {
+      errorMessage.style.display = "block";
+      successMessage.style.display = "none";
+    }
+  });
+</script>
+
+<style>
+  .subscribe-container {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 60px 40px;
+    background: var(--color-background);
+    border: 1px solid var(--color-text);
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--color-text);
+  }
+
+  p {
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 40px;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+
+  .subscribe-form {
+    display: flex;
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 14px 20px;
+    font-size: 18px;
+    border: 1px solid var(--color-text);
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: inherit;
+  }
+
+  .email-input::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  .email-input:focus {
+    outline: none;
+    border-color: var(--color-text);
+  }
+
+  .subscribe-button {
+    padding: 14px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: var(--color-text);
+    color: var(--color-background);
+    border: 2px solid var(--color-text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .subscribe-button:hover {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  .success-message,
+  .error-message {
+    font-size: 20px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .success-message {
+    color: var(--color-text);
+    opacity: 0.9;
+  }
+
+  .error-message {
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 768px) {
+    .subscribe-container {
+      margin: 60px 20px;
+      padding: 40px 20px;
+    }
+
+    h3 {
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 32px;
+    }
+
+    .subscribe-form {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .email-input,
+    .subscribe-button {
+      width: 100%;
+      font-size: 16px;
+    }
+  }
+</style>

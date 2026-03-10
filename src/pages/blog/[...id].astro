@@ -1,0 +1,297 @@
+---
+import { getSubstackPosts, type SubstackPost } from "../../utils/substack";
+import Layout from "../../layouts/Layout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import ContactButton from "../../components/ContactButton.astro";
+import BlogHero from "../../components/BlogHero.astro";
+import selfSmile from "../../assets/self-smile.jpg";
+import SubstackSubscribe from "../../components/SubstackSubscribe.astro";
+
+export async function getStaticPaths() {
+  const posts = await getSubstackPosts();
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: post,
+  }));
+}
+
+type Props = SubstackPost;
+
+const post = Astro.props;
+const heroImageUrl = post.heroImage || selfSmile.src;
+---
+
+<Layout pageTitle={post.title} pageDescription={post.description}>
+  <BlogHero heroImage={heroImageUrl} />
+
+  <article class="blog-post">
+    <div class="post-wrapper">
+      <div class="post-header">
+        <div class="post-meta">
+          <FormattedDate date={post.pubDate} />
+        </div>
+        <h1 class="post-title">{post.title}</h1>
+      </div>
+
+      <div class="post-content" set:html={post.content} />
+
+      <div class="read-more-wrapper">
+        <p>
+          Enjoyed this? Read the full discussion and join the conversation on
+          <a href={post.link} target="_blank" rel="noopener noreferrer"
+            >Substack</a
+          >.
+        </p>
+      </div>
+
+      <SubstackSubscribe />
+
+      <div class="back-link">
+        <a href="/blog">← Back to Blog</a>
+      </div>
+    </div>
+  </article>
+  <ContactButton />
+</Layout>
+
+<style is:global>
+  .blog-post {
+    width: 100%;
+    background: var(--color-background);
+    padding: 60px 0;
+    overflow-x: hidden;
+  }
+
+  .post-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    overflow-x: hidden;
+  }
+
+  .post-header {
+    margin-bottom: 60px;
+  }
+
+  .post-meta {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--color-text);
+    opacity: 0.6;
+  }
+
+  .post-title {
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .post-content {
+    color: var(--color-text);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .post-content h2,
+  .post-content h3,
+  .post-content h4,
+  .post-content h5,
+  .post-content h6 {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .post-content h2 {
+    font-size: 40px;
+    padding: 30px 0 5px 0;
+  }
+
+  .post-content h3 {
+    font-size: 32px;
+    padding: 20px 0 5px 0;
+  }
+
+  .post-content p {
+    font-size: 30px;
+    line-height: 48px;
+    margin: 1em 0;
+  }
+
+  .post-content a {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .post-content a:hover {
+    opacity: 0.8;
+  }
+
+  .post-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 2em 0;
+    box-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.16);
+  }
+
+  .post-content ul,
+  .post-content ol {
+    font-size: 30px;
+    line-height: 48px;
+    margin: 1em 0;
+    padding-left: 2em;
+  }
+
+  .post-content li {
+    margin: 0.5em 0;
+  }
+
+  .post-content code {
+    background: var(--color-card);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .post-content pre {
+    background: var(--color-card);
+    padding: 1.5em;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 2em 0;
+  }
+
+  .post-content pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .post-content blockquote {
+    border-left: 4px solid var(--color-text);
+    padding-left: 1.5em;
+    margin: 2em 0;
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  .read-more-wrapper {
+    margin-top: 60px;
+    padding: 40px;
+    background: var(--color-background);
+    border: 1px solid var(--color-text);
+  }
+
+  .read-more-wrapper p {
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 20px;
+  }
+
+  .read-more-wrapper a {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.3s ease;
+  }
+
+  .read-more-wrapper a:hover {
+    opacity: 0.8;
+  }
+
+  .back-link {
+    margin-top: 40px;
+  }
+
+  .back-link a {
+    color: var(--color-text);
+    text-decoration: none;
+    opacity: 0.8;
+    font-size: 20px;
+    transition: opacity 0.3s ease;
+  }
+
+  .back-link a:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .blog-post {
+      padding: 40px 0;
+    }
+
+    .post-wrapper {
+      padding: 20px;
+    }
+
+    .post-title {
+      font-size: 36px;
+    }
+
+    .post-content h2 {
+      font-size: 28px;
+    }
+
+    .post-content h3 {
+      font-size: 24px;
+    }
+
+    .post-content p {
+      font-size: 24px;
+      line-height: 36px;
+    }
+
+    .post-content ul,
+    .post-content ol {
+      font-size: 24px;
+      line-height: 36px;
+    }
+
+    .read-more-wrapper {
+      padding: 30px 20px;
+    }
+
+    .read-more-wrapper p {
+      font-size: 20px;
+      line-height: 32px;
+    }
+
+    .back-link a {
+      font-size: 18px;
+    }
+
+    .post-content img,
+    .post-content :global(iframe) {
+      margin: 1.5rem 0;
+    }
+  }
+
+  /* Fix for Substack's default image captions and wrappers */
+  .post-content :global(.caption) {
+    font-size: 16px;
+    text-align: center;
+    opacity: 0.7;
+    margin-top: -1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Handle iframe embeds (like YouTube or Substack players) */
+  .post-content :global(iframe) {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    margin: 2rem 0;
+    border: none;
+  }
+
+  .post-content :global(div),
+  .post-content :global(figure) {
+    max-width: 100%;
+    overflow: hidden;
+  }
+</style>
