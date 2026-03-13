@@ -1,4 +1,8 @@
-<form id="contact-form" action="https://formspree.io/f/xpwvvggz" method="POST">
+<form
+  id="contact-form"
+  data-action="https://formspree.io/f/xpwvvggz"
+  data-method="POST"
+>
   <div class="form-group">
     <input type="text" id="name" name="name" placeholder="Your Name" required />
   </div>
@@ -186,73 +190,77 @@
   }
 </style>
 
-<script>
+<script is:inline>
   // Client-side form handling
-  const form = document.getElementById("contact-form") as HTMLFormElement;
-  const successMessage = document.getElementById("success-message");
-  const errorMessage = document.getElementById("error-message");
-  const submitButton = form?.querySelector(
-    ".submit-button",
-  ) as HTMLButtonElement;
-  const subjectSelect = document.getElementById("subject") as HTMLSelectElement;
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contact-form");
+    const successMessage = document.getElementById("success-message");
+    const errorMessage = document.getElementById("error-message");
+    const submitButton = form?.querySelector(".submit-button");
+    const subjectSelect = document.getElementById("subject");
 
-  // Handle select placeholder styling
-  if (subjectSelect) {
-    subjectSelect.classList.add("placeholder");
-    subjectSelect.addEventListener("change", () => {
-      if (subjectSelect.value) {
-        subjectSelect.classList.remove("placeholder");
-      } else {
-        subjectSelect.classList.add("placeholder");
-      }
-    });
-  }
-
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-
-      try {
-        submitButton.disabled = true;
-        submitButton.textContent = "Sending...";
-
-        const response = await fetch(form.action, {
-          method: form.method,
-          body: formData,
-          headers: {
-            Accept: "application/json",
-          },
-        });
-
-        if (response.ok) {
-          form.reset();
-          successMessage?.classList.remove("hidden");
-          errorMessage?.classList.add("hidden");
-          submitButton.classList.add("hidden");
-
-          // Reset after 5 seconds
-          setTimeout(() => {
-            successMessage?.classList.add("hidden");
-            submitButton.classList.remove("hidden");
-            submitButton.disabled = false;
-            submitButton.textContent = "Send Message";
-          }, 2000);
+    // Handle select placeholder styling
+    if (subjectSelect) {
+      subjectSelect.classList.add("placeholder");
+      subjectSelect.addEventListener("change", () => {
+        if (subjectSelect.value) {
+          subjectSelect.classList.remove("placeholder");
         } else {
-          throw new Error("Form submission failed");
+          subjectSelect.classList.add("placeholder");
         }
-      } catch (error) {
-        errorMessage?.classList.remove("hidden");
-        successMessage?.classList.add("hidden");
-        submitButton.disabled = false;
-        submitButton.textContent = "Send Message";
+      });
+    }
 
-        // Hide error after 5 seconds
-        setTimeout(() => {
-          errorMessage?.classList.add("hidden");
-        }, 3000);
-      }
-    });
-  }
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const formData = new FormData(form);
+        const action = form.getAttribute("data-action");
+        const method = form.getAttribute("data-method");
+
+        try {
+          submitButton.disabled = true;
+          submitButton.textContent = "Sending...";
+
+          const response = await fetch(action, {
+            method: method,
+            body: formData,
+            headers: {
+              Accept: "application/json",
+            },
+          });
+
+          if (response.ok) {
+            form.reset();
+            subjectSelect?.classList.add("placeholder");
+            successMessage?.classList.remove("hidden");
+            errorMessage?.classList.add("hidden");
+            submitButton.classList.add("hidden");
+
+            // Reset after 2 seconds
+            setTimeout(() => {
+              successMessage?.classList.add("hidden");
+              submitButton.classList.remove("hidden");
+              submitButton.disabled = false;
+              submitButton.textContent = "Send Message";
+            }, 2000);
+          } else {
+            throw new Error("Form submission failed");
+          }
+        } catch (error) {
+          errorMessage?.classList.remove("hidden");
+          successMessage?.classList.add("hidden");
+          submitButton.disabled = false;
+          submitButton.textContent = "Send Message";
+
+          // Hide error after 3 seconds
+          setTimeout(() => {
+            errorMessage?.classList.add("hidden");
+          }, 3000);
+        }
+      });
+    }
+  });
 </script>
