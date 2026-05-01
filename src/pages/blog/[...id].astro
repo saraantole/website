@@ -1,5 +1,7 @@
 ---
-import { getSubstackPosts, type SubstackPost } from "../../utils/substack";
+export const prerender = false;
+
+import { getSubstackPosts } from "../../utils/substack";
 import Layout from "../../layouts/Layout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import ContactButton from "../../components/ContactButton.astro";
@@ -7,17 +9,14 @@ import BlogHero from "../../components/BlogHero.astro";
 import selfSmile from "../../assets/self-smile.jpg";
 import SubstackSubscribe from "../../components/SubstackSubscribe.astro";
 
-export async function getStaticPaths() {
-  const posts = await getSubstackPosts();
-  return posts.map((post) => ({
-    params: { id: post.id },
-    props: post,
-  }));
+const { id } = Astro.params;
+const posts = await getSubstackPosts();
+const post = posts.find((p) => p.id === id);
+
+if (!post) {
+  return Astro.redirect("/404");
 }
 
-type Props = SubstackPost;
-
-const post = Astro.props;
 const heroImageUrl = post.heroImage || selfSmile.src;
 ---
 
