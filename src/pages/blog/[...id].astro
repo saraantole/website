@@ -129,6 +129,11 @@ const heroImageUrl = post.heroImage || selfSmile.src;
     opacity: 0.8;
   }
 
+  .post-content a:has(img):hover {
+    opacity: 1;
+    cursor: default;
+  }
+
   .post-content img {
     max-width: 100%;
     width: 100%;
@@ -136,6 +141,11 @@ const heroImageUrl = post.heroImage || selfSmile.src;
     display: block;
     margin: 2em 0;
     box-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.16);
+  }
+
+  .post-content figcaption,
+  .post-content .image-caption {
+    text-align: center;
   }
 
   .post-content ul,
