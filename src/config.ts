@@ -24,7 +24,7 @@ export const COLORS = {
 };
 
 //-- BLOG SETTINGS -----
-export const SUBSTACK_URL = "https://saracalmtech.substack.com";
+export const SUBSTACK_URL = "https://saraantole.substack.com";
 export const SUBSTACK_RSS_FEED = `${SUBSTACK_URL}/feed`;
 
 //-- SOCIAL MEDIA SETTINGS -----
@@ -39,7 +39,7 @@ export const SOCIAL_MEDIA = [
   },
   {
     name: "Instagram",
-    url: "https://www.instagram.com/sara.calmtech/",
+    url: "https://www.instagram.com/saraantole/",
   },
 ];
 
