@@ -1,0 +1,278 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import ContactButton from "../../components/ContactButton.astro";
+import { getSubstackPosts } from "../../utils/substack";
+import SubstackSubscribe from "../../components/SubstackSubscribe.astro";
+import selfSmile from "../../assets/self-smile.jpg";
+
+const posts = await getSubstackPosts();
+---
+
+<Layout pageTitle="Blog" pageDescription="Read my latest articles and insights">
+  <section class="blog-section">
+    <div class="blog-wrapper">
+      <h1 class="blog-title" id="blog-title">Thoughts Lately</h1>
+      <p class="blog-intro">
+        One a month, roughly. Mostly about using AI a lot and staying good at
+        your work.
+      </p>
+      {
+        posts.length === 0 ? (
+          <p class="no-posts-message">No blog posts yet. Check back soon!</p>
+        ) : (
+          <ul class="posts-grid">
+            {posts.map((post) => (
+              <li>
+                <a href={`/blog/${post.id}/`} class="post-card">
+                  <div class="post-image-wrapper">
+                    <div
+                      class="post-image-blurred"
+                      style={`background-image: url(${post.heroImage || selfSmile.src});`}
+                    />
+                    <div
+                      class="post-image-clear"
+                      style={`background-image: url(${post.heroImage || selfSmile.src});`}
+                    />
+                    <div class="post-border" />
+                    <div class="post-plus">+</div>
+                  </div>
+                  <div class="post-content">
+                    <h3 class="post-title">{post.title}</h3>
+                    <p class="post-date">
+                      <FormattedDate date={post.pubDate} />
+                    </p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </section>
+  <SubstackSubscribe />
+  <ContactButton />
+</Layout>
+
+<style>
+  .blog-section {
+    width: 100%;
+    background: var(--color-background);
+    padding: 160px 0 50px 0;
+    overflow: hidden;
+  }
+
+  .blog-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .blog-title {
+    font-size: 72px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: var(--color-text);
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .blog-intro {
+    margin: 0 0 60px 0;
+    max-width: 52ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.75;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 32px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .posts-grid li {
+    display: flex;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-background);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .post-card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  }
+
+  .post-image-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    position: relative;
+    background: var(--color-background);
+  }
+
+  .post-image-blurred {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px) grayscale(100%);
+    z-index: 0;
+  }
+
+  .post-image-clear {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(40%);
+    clip-path: inset(0% 0% 0% 0%);
+    z-index: 1;
+    transition: clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .post-card:hover .post-image-clear {
+    clip-path: inset(20% 30% 20% 30%);
+  }
+
+  .post-border {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    border: 1px solid var(--color-tertiary);
+    z-index: 2;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .post-card:hover .post-border {
+    top: 20%;
+    left: 30%;
+    right: 30%;
+    bottom: 20%;
+  }
+
+  .post-plus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-tertiary);
+    font-size: 40px;
+    font-weight: 300;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .post-card:hover .post-plus {
+    opacity: 1;
+  }
+
+  .post-content {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+    color: var(--color-text);
+  }
+
+  .post-date {
+    font-size: 14px;
+    margin: 0;
+    color: var(--color-text);
+    opacity: 0.5;
+    font-weight: 400;
+  }
+
+  .no-posts-message {
+    font-size: 24px;
+    color: var(--color-text);
+    opacity: 0.7;
+    text-align: center;
+    margin-top: 150px;
+  }
+
+  @media (max-width: 768px) {
+    .blog-section {
+      padding: 40px 0 80px 0;
+    }
+
+    .blog-wrapper {
+      padding: 0 20px;
+    }
+
+    .blog-title {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .blog-intro {
+      margin-bottom: 40px;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .post-image-clear {
+      clip-path: inset(20% 30% 20% 30%);
+    }
+
+    .post-border {
+      top: 20%;
+      left: 30%;
+      right: 30%;
+      bottom: 20%;
+    }
+
+    .post-plus {
+      opacity: 1;
+    }
+
+    .post-content {
+      padding: 20px;
+    }
+
+    .post-title {
+      font-size: 22px;
+    }
+
+    .post-date {
+      font-size: 14px;
+    }
+  }
+</style>

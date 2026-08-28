@@ -20,7 +20,14 @@ const pageTitle = useSeoTitleSuffix
 <Layout pageTitle={pageTitle} pageDescription="Get in touch with Sara Antole">
   <section class="contact-section">
     <div class="contact-wrapper">
-      <h2>Let's get in touch!</h2>
+      <div class="contact-copy">
+        <h2>Say hello</h2>
+        <p class="contact-intro">
+          Questions, ideas, or something you're working on. If you want AI in
+          your work without losing what makes it yours, that's a conversation
+          I'm always up for.
+        </p>
+      </div>
       <ContactForm />
     </div>
   </section>
@@ -43,14 +50,26 @@ const pageTitle = useSeoTitleSuffix
     gap: 60px;
   }
 
+  .contact-copy {
+    width: 30vw;
+  }
+
   h2 {
     font-weight: 700;
     font-size: clamp(108px, 4.5vw, 4.5em);
     letter-spacing: 2px;
     line-height: 1.2;
     margin: 0;
-    width: 30vw;
     color: var(--color-text);
+  }
+
+  .contact-intro {
+    margin: 2rem 0 0 0;
+    max-width: 42ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.75;
   }
 
   @media (max-width: 768px) {
@@ -63,8 +82,11 @@ const pageTitle = useSeoTitleSuffix
       gap: 40px;
     }
 
-    h2 {
+    .contact-copy {
       width: 100%;
+    }
+
+    h2 {
       font-size: 48px;
       line-height: 60px;
     }

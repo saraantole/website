@@ -15,6 +15,10 @@ const posts = await getSubstackPosts();
   <section class="blog-section">
     <div class="blog-wrapper">
       <h1 class="blog-title" id="blog-title">Thoughts Lately</h1>
+      <p class="blog-intro">
+        One a month, roughly. Mostly about using AI a lot and staying good at
+        your work.
+      </p>
       {
         posts.length === 0 ? (
           <p class="no-posts-message">No blog posts yet. Check back soon!</p>
@@ -70,10 +74,19 @@ const posts = await getSubstackPosts();
   .blog-title {
     font-size: 72px;
     font-weight: 600;
-    margin: 0 0 60px 0;
+    margin: 0 0 16px 0;
     color: var(--color-text);
     will-change: transform;
     transform: translateZ(0);
+  }
+
+  .blog-intro {
+    margin: 0 0 60px 0;
+    max-width: 52ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.75;
   }
 
   .posts-grid {
@@ -223,6 +236,10 @@ const posts = await getSubstackPosts();
 
     .blog-title {
       font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .blog-intro {
       margin-bottom: 40px;
     }
 

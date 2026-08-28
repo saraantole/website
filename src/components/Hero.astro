@@ -1,12 +1,5 @@
 ---
 import heroImage from "../assets/result_01.jpg";
-
-const adjectives = [
-  "Intentional tech",
-  "AI-native",
-  "Human-first",
-  "Experiment-driven",
-];
 ---
 
 <section id="hero" class="hero">
@@ -20,18 +13,6 @@ const adjectives = [
   <div class="hero-border"></div>
   <div class="hero-plus">+</div>
   <div class="hero-overlay"></div>
-  <div class="hero-center-content">
-    {
-      adjectives.map((adj, index) => (
-        <div
-          class="hero-text"
-          style={`animation-delay: ${2.4 + index * 0.15}s`}
-        >
-          {adj}
-        </div>
-      ))
-    }
-  </div>
   <div class="hero-content">
     <h1 class="title">Sara Antole</h1>
   </div>
@@ -173,14 +154,6 @@ const adjectives = [
     .hero-plus {
       top: 35%;
     }
-
-    .hero-center-content {
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 0 2rem;
-      top: 60% !important;
-      transform: translateY(0) !important;
-    }
   }
 
   .hero-overlay {
@@ -193,32 +166,6 @@ const adjectives = [
     z-index: 1;
     opacity: 0;
     animation: fadeIn 0.8s ease-out 0.4s forwards;
-  }
-
-  .hero-center-content {
-    position: absolute;
-    top: 55%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    z-index: 2;
-    display: flex;
-    padding: 0 2rem;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .hero-text {
-    font-family: var(--font-primary);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--color-background);
-    white-space: nowrap;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   @keyframes fadeInUp {
