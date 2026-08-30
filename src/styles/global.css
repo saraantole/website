@@ -1,11 +1,13 @@
 /* ============================================
    CSS Custom Properties (Theme Variables)
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
   /* Fonts */
   --font-primary: 'Manrope', sans-serif, -apple-system;
+  /* Display face — headlines only. Body, UI and long-form stay on Manrope. */
+  --font-display: 'Instrument Serif', Georgia, serif;
 
   /* Colors - Light Theme (default) */
   --color-text: #000000; /*#0D6E75*/
@@ -91,7 +93,9 @@ main {
    Typography
    ============================================ */
 h1 {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
   font-size: 2rem;
   line-height: 2.375rem;
   color: var(--color-primary);
@@ -99,7 +103,9 @@ h1 {
 }
 
 h2 {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
   font-size: 1.25rem;
   line-height: 1.5rem;
   color: var(--color-primary);
@@ -107,7 +113,8 @@ h2 {
 }
 
 h3 {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: 1.75rem;
   line-height: 2.25rem;
   color: var(--color-primary);
