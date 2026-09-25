@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
-import dinoGif from "../assets/dino.gif";
+import dinoGif from "../assets/dino.webp";
 ---
 
 <Layout pageTitle="404: Not found">
@@ -9,11 +8,11 @@ import dinoGif from "../assets/dino.gif";
     <div class="content-wrapper">
       <h1 data-testid="heading">OOPS!</h1>
       <div class="dino-container">
-        <Image
-          src={dinoGif}
+        <img
+          src={dinoGif.src}
           alt="404 Dinosaur"
-          width={500}
-          height={500}
+          width={480}
+          height={152}
           loading="eager"
           class="dino-image"
         />

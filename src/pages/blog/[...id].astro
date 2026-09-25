@@ -6,7 +6,7 @@ import Layout from "../../layouts/Layout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import ContactButton from "../../components/ContactButton.astro";
 import BlogHero from "../../components/BlogHero.astro";
-import selfSmile from "../../assets/self-smile.jpg";
+import selfSmile from "../../assets/self-smile.webp";
 import SubstackSubscribe from "../../components/SubstackSubscribe.astro";
 
 const { id } = Astro.params;
@@ -20,7 +20,11 @@ if (!post) {
 const heroImageUrl = post.heroImage || selfSmile.src;
 ---
 
-<Layout pageTitle={post.title} pageDescription={post.description}>
+<Layout
+  pageTitle={post.title}
+  pageDescription={post.description}
+  pageImage={post.heroImage}
+>
   <BlogHero heroImage={heroImageUrl} />
 
   <article class="blog-post">

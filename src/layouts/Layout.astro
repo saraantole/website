@@ -3,13 +3,12 @@ import BaseHead from "../components/BaseHead.astro";
 import "../styles/global.css";
 import Header from "../components/header/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
-import FallbackImage from "../assets/blog-placeholder-1.jpg";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_OG_IMAGE } from "../config";
 
 interface Props {
   pageTitle: string;
   pageDescription?: string;
-  pageImage?: ImageMetadata;
+  pageImage?: ImageMetadata | string;
 }
 
 const { pageTitle, pageDescription, pageImage } = Astro.props;
@@ -19,7 +18,9 @@ const title =
     ? `${pageTitle} | ${SITE_TITLE}`
     : SITE_TITLE;
 const description = pageDescription || SITE_DESCRIPTION;
-const image = pageImage || FallbackImage;
+const image =
+  (typeof pageImage === "string" ? pageImage : pageImage?.src) ||
+  SITE_OG_IMAGE;
 ---
 
 <!doctype html>

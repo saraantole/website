@@ -6,6 +6,7 @@ export const SITE_DESCRIPTION =
 export const SITE_URL = "https://saraantole.vercel.app";
 export const SITE_LANGUAGE = "en_US";
 export const SITE_ICON = "favicon.png";
+export const SITE_OG_IMAGE = "/og-image.png";
 export const AUTHOR = "Sara Antole";
 
 // -- THEME SETTINGS -----
