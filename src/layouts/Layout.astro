@@ -14,7 +14,10 @@ interface Props {
 
 const { pageTitle, pageDescription, pageImage } = Astro.props;
 
-const title = pageTitle || SITE_TITLE;
+const title =
+  pageTitle && pageTitle !== SITE_TITLE
+    ? `${pageTitle} | ${SITE_TITLE}`
+    : SITE_TITLE;
 const description = pageDescription || SITE_DESCRIPTION;
 const image = pageImage || FallbackImage;
 ---

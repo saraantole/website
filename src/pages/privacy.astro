@@ -1,14 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { SITE_TITLE } from "../config";
 
 const title = "Privacy Policy";
 const description = "Privacy policy for this website";
-const useSeoTitleSuffix = true;
 ---
 
 <Layout
-  pageTitle={useSeoTitleSuffix ? `${title} - ${SITE_TITLE}` : title}
+  pageTitle={title}
   pageDescription={description}
 >
   <section class="privacy-section">

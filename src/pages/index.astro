@@ -1,16 +1,15 @@
 ---
-import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
+import { SITE_DESCRIPTION } from "../config";
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import AboutIntro from "../components/AboutIntro.astro";
 import ContactButton from "../components/ContactButton.astro";
 
 const { title, description } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
 const pageDescription = description || SITE_DESCRIPTION;
 ---
 
-<Layout pageTitle={pageTitle} pageDescription={pageDescription}>
+<Layout pageTitle={title} pageDescription={pageDescription}>
   <Hero />
   <AboutIntro />
   <ContactButton />

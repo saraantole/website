@@ -2,7 +2,7 @@
 export const SITE_TITLE = "Sara Antole";
 export const SITE_SHORT_TITLE = "SA"; // Used as logo text in header, footer, and splash screen
 export const SITE_DESCRIPTION =
-  "Sara Antole, AI engineer. I help people get more done with AI without losing the judgment and craft that make their work theirs.";
+  "Sara Antole builds AI and automation systems for a living, and helps businesses put them to work without losing the craft that makes their work theirs.";
 export const SITE_URL = "https://saraantole.vercel.app";
 export const SITE_LANGUAGE = "en_US";
 export const SITE_ICON = "favicon.png";

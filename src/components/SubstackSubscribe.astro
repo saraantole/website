@@ -1,10 +1,14 @@
+---
+import { SUBSTACK_URL } from "../config";
+---
+
 <div class="subscribe-container">
   <h3>Subscribe to the newsletter</h3>
   <p>Get the latest thoughts directly in your inbox.</p>
 
   <form
     id="subscribe-form"
-    action="https://saracalmtech.substack.com/api/v1/free"
+    action={`${SUBSTACK_URL}/api/v1/free`}
     method="post"
     class="subscribe-form"
   >

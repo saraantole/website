@@ -1,20 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { SITE_TITLE } from "../config";
 import ContactForm from "../components/ContactForm.astro";
 
-const frontmatter = {
-  seoTitle: "Contact",
-  useSeoTitleSuffix: true,
-};
-
-const { seoTitle, useSeoTitleSuffix } = frontmatter;
-const seoTitleSuffix = SITE_TITLE;
-
-// SEO title logic from original component
-const pageTitle = useSeoTitleSuffix
-  ? `${seoTitle} - ${seoTitleSuffix}`
-  : seoTitle;
+const pageTitle = "Contact";
 ---
 
 <Layout pageTitle={pageTitle} pageDescription="Get in touch with Sara Antole">
@@ -23,9 +11,8 @@ const pageTitle = useSeoTitleSuffix
       <div class="contact-copy">
         <h2>Say hello</h2>
         <p class="contact-intro">
-          Questions, ideas, or something you're working on. If you want AI in
-          your work without losing what makes it yours, that's a conversation
-          I'm always up for.
+          Questions, ideas, or something you're working on. All forms lead to
+          Rome and I answer them all.
         </p>
       </div>
       <ContactForm />

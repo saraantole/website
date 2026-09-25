@@ -1,5 +1,10 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from "../config";
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  AUTHOR,
+  SOCIAL_MEDIA,
+} from "../config";
 import { ClientRouter } from "astro:transitions";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -12,11 +17,7 @@ const structuredData = {
   name: AUTHOR,
   url: Astro.site,
   description: SITE_DESCRIPTION,
-  sameAs: [
-    "https://www.linkedin.com/in/sara-antole/",
-    "https://github.com/saraantole",
-    "https://www.instagram.com/sara.calmtech/",
-  ],
+  sameAs: SOCIAL_MEDIA.map((social) => social.url),
 };
 ---
 
